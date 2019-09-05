@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
+import os
 
 
 class Net(nn.Module):
@@ -38,6 +39,9 @@ def train(model, device, train_loader, optimizer, epoch, log):
             log.write('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}\n'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
                        100. * batch_idx / len(train_loader), loss.item()))
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, batch_idx * len(data), len(train_loader.dataset),
+                       100. * batch_idx / len(train_loader), loss.item()))
 
 
 def test(model, device, test_loader, log):
@@ -54,12 +58,15 @@ def test(model, device, test_loader, log):
 
     test_loss /= len(test_loader.dataset)
 
+    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)'.format(
+        test_loss, correct, len(test_loader.dataset),
+        100. * correct / len(test_loader.dataset)))
     log.write('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
 
 
-def main():
+def main(dataset, epoch):
     # Training settings
     use_cuda = torch.cuda.is_available()
 
@@ -67,15 +74,16 @@ def main():
 
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
 
+    EPOCH = epoch + 1
     train_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('data/pt_data', train=True, download=False,
+        datasets.MNIST(os.path.join(dataset, 'pt_data'), train=True, download=False,
                        transform=transforms.Compose([
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
         batch_size=64, shuffle=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('data/pt_data', train=False, transform=transforms.Compose([
+        datasets.MNIST(os.path.join(dataset, 'pt_data'), train=False, transform=transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize((0.1307,), (0.3081,))
         ])),
@@ -86,8 +94,8 @@ def main():
 
     f = open('log/pt1.log', mode='w', encoding='utf-8')
 
-    for epoch in range(5):
-        train(model, device, train_loader, optimizer, epoch, f)
+    for i in range(EPOCH):
+        train(model, device, train_loader, optimizer, i, f)
         test(model, device, test_loader,f)
 
     f.close()

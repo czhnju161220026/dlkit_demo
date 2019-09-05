@@ -1,5 +1,6 @@
 # encoding=utf-8
 
+import argparse
 from pytorch_demos.demo1.main import main as pt_m1
 from datetime import datetime
 
@@ -8,17 +9,28 @@ tasks = {
 }
 
 
-
-def launch(func_name):
+def launch(func_name, dataset, epoch):
     func = tasks[func_name]
     start = datetime.now()
     print('{:-^60s}'.format(func_name))
     print('%s starts executing at %s' % (func_name.ljust(20), start.strftime('%Y/%m/%d, %H:%M:%S')))
-    func()
+    func(dataset, epoch)
     elapsed = datetime.now() - start
     print('%s finished, Elapsed time:%.4f ms' % (func_name.ljust(20), elapsed.microseconds))
 
 
 if __name__ == '__main__':
-    for task in tasks:
-        launch(task)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-a', '--all', help='run all demos', action='store_true')
+    parser.add_argument('-n', '--name', help='the name of the task you want to run', type=str, default='Pytorch Minist')
+    parser.add_argument('-e', '--epoch', help='set num of epochs', type=int, default=10)
+    parser.add_argument('data', type=str, help='path to data set')
+    options = parser.parse_args()
+    print(options)
+    if options.all:
+        print('Run all demos')
+        for task in tasks:
+            launch(task, options.data, options.epoch)
+    else:
+        print('Run %s' % options.name)
+        launch(options.name, options.data, options.epoch)
