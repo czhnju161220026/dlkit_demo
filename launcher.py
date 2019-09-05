@@ -4,12 +4,14 @@ import argparse
 from pytorch_demos.demo1.main import main as pt_m1
 from pytorch_demos.demo2.entry import main as pt_m2
 from pytorch_demos.demo3.entry import main as pt_m3
+from pytorch_demos.demo4.entry import main as pt_m4
 from datetime import datetime
 
 tasks = {
-    'Pytorch Minist': pt_m1,
-    'Dcgan': pt_m2,
-    'Vae' : pt_m3
+    # 'Pytorch Mnist': pt_m1,
+    # 'Dcgan': pt_m2,
+    # 'Vae' : pt_m3,
+    'Mnist hogwild': pt_m4
 }
 
 
@@ -26,7 +28,7 @@ def launch(func_name, dataset, epoch):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--all', help='run all demos', action='store_true')
-    parser.add_argument('-n', '--name', help='the name of the task you want to run', type=str, default='Pytorch Minist')
+    parser.add_argument('-n', '--name', help='the name of the task you want to run', type=str, default='Pytorch Mnist')
     parser.add_argument('-e', '--epoch', help='set num of epochs', type=int, default=10)
     parser.add_argument('data', type=str, help='path to data set')
     options = parser.parse_args()
