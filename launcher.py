@@ -2,10 +2,12 @@
 
 import argparse
 from pytorch_demos.demo1.main import main as pt_m1
+from pytorch_demos.demo2.entry import main as pt_m2
 from datetime import datetime
 
 tasks = {
-    'Pytorch Minist': pt_m1
+    'Pytorch Minist': pt_m1,
+    'Dcgan': pt_m2
 }
 
 
