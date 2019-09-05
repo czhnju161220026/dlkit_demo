@@ -6,6 +6,8 @@ from pytorch_demos.demo2.entry import main as pt_m2
 from pytorch_demos.demo3.entry import main as pt_m3
 from pytorch_demos.demo4.entry import main as pt_m4
 from pytorch_demos.demo5.entry import main as pt_m5
+from pytorch_demos.demo6.entry import main as pt_m6
+from pytorch_demos.demo7.entry import main as pt_m7
 from datetime import datetime
 
 tasks = {
@@ -13,7 +15,9 @@ tasks = {
     'Dcgan': pt_m2,
     'Vae': pt_m3,
     'Mnist hogwild': pt_m4,
-    'Regression': pt_m5
+    'Regression': pt_m5,
+    'LSTM wave': pt_m6,
+    'LSTM Name classify': pt_m7
 }
 
 
